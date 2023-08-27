@@ -42,7 +42,7 @@ class VehicleController extends Controller
             'vehicle_class' => $request->vehicle_class
         ]);
 
-        return redirect(route('vehicles.index'))->with(['message' => 'Vehicle has been successfully created', 'class' => 'alert-success']);;
+        return redirect(route('vehicles.index'))->with(['message' => 'Vehicle has been successfully created', 'class' => 'alert-success']);
     }
 
     /**

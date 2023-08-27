@@ -6,15 +6,34 @@ use App\Http\Requests\StoreUpdatePlanetRequest;
 
 use App\Models\Planet;
 use App\Models\Film;
+use App\Services\PlanetService;
 
 class PlanetController extends Controller
 {
+
+    /**
+     * @var PlanetService  $planetService
+     */
+    private PlanetService $planetService;
+
+    /**
+     * PlanetController constructor
+     *
+     * @param PlanetService $planetService
+     */
+    public function __construct(PlanetService $planetService)
+    {
+        $this->planetService = $planetService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('swapi.planets.index')->with('tenPlanets', Planet::simplePaginate(10));
+        $planet = $this->planetService->paginate(10);
+
+        return view('swapi.planets.index')->with('tenPlanets', $planet);
     }
 
     /**
@@ -32,21 +51,7 @@ class PlanetController extends Controller
      */
     public function store(StoreUpdatePlanetRequest $request)
     {
-        $films = Film::whereIn('title', $request->films)->get();
-
-        $planet = Planet::create([
-            'name' => $request->name,
-            'rotation_period' => $request->rotation_period,
-            'orbital_period' => $request->orbital_period,
-            'diameter' => $request->diameter,
-            'climate' => $request->climate,
-            'gravity' => $request->gravity,
-            'terrain' => $request->terrain,
-            'surface_water' => $request->surface_water,
-            'population' => $request->population,
-        ]);
-
-        $planet->films()->attach($films);
+        $this->planetService->create($request->all());
 
         return redirect(route('planets.index'))->with(['message' => 'Planet has been successfully created', 'class' => 'alert-success']);
     }
@@ -54,9 +59,9 @@ class PlanetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Planet $planet)
+    public function show($id)
     {
-        return view('swapi.planets.show')->with('planet', $planet);
+        return view('swapi.planets.show')->with('planet', $this->planetService->find($id));
     }
 
     /**
@@ -73,22 +78,10 @@ class PlanetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Planet $planet)
+    public function update(StoreUpdatePlanetRequest $request, $id)
     {
-        $films = Film::whereIn('title', $request->films)->get();
 
-        $planet->name = $request->name;
-        $planet->rotation_period = $request->rotation_period;
-        $planet->orbital_period = $request->orbital_period;
-        $planet->diameter = $request->diameter;
-        $planet->climate = $request->climate;
-        $planet->gravity = $request->gravity;
-        $planet->terrain = $request->terrain;
-        $planet->surface_water = $request->surface_water;
-        $planet->population = $request->population;
-        $planet->save();
-
-        $planet->films()->attach($films);
+        $this->planetService->edit($id, $request->all());
 
         return redirect(route('planets.index'))
             ->with(['message' => 'Planet has been successfully created', 'class' => 'alert-success']);
@@ -98,9 +91,9 @@ class PlanetController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Planet $planet)
+    public function destroy($id)
     {
-        $planet->delete();
+        $this->planetService->delete($id);
 
         return redirect(route('planets.index'))
             ->with(['message' => 'Planet has been successfully deleted', 'class' => 'alert-success']);

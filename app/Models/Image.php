@@ -9,10 +9,17 @@ class Image extends Model
 {
     use HasFactory;
 
+
     protected $table = 'images';
 
     protected $fillable = [
         'id',
-        'url'
+        'url',
+        'created_at',
+        'updated_at'
     ];
+
+    public function people() {
+        return $this->belongsToMany(People::class, 'people_images', 'image_id', 'people_id');
+    }
 }

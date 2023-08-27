@@ -13,16 +13,35 @@ use App\Models\Vehicle;
 
 use App\Models\Image;
 
+use App\Services\PeopleService;
 use Illuminate\Http\Request;
 
 class PeopleController extends Controller
 {
+
+    /**
+     * @var PeopleService $peopleService
+     */
+    private PeopleService $peopleService;
+
+    /**
+     * PeopleController constructor
+     *
+     * @param PeopleService $peopleService
+     */
+    public function __construct(PeopleService $peopleService)
+    {
+        $this->peopleService = $peopleService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('swapi.people.index')->with('tenPeople', People::simplePaginate(10));
+        $people = $this->peopleService->paginate(10);
+
+        return view('swapi.people.index')->with('tenPeople', $people);
     }
 
     /**
@@ -50,47 +69,7 @@ class PeopleController extends Controller
 
         $this->authorize('create', People::class);
 
-        $images = [];
-
-        if (!empty($request->file('images'))) {
-            foreach ($request->file('images') as $image) {
-                $images[] = $image->store('images', 'public');
-            }
-        }
-
-        $image_ids = [];
-
-        for($i = 0; $i < count($images); $i++) {
-            $image = Image::create([
-                'url' => $images[$i]
-            ]);
-
-            $image_ids[] = $image->id;
-        }
-
-        $films = Film::whereIn('title', $request->films)->get();
-        $species = Specie::whereIn('name', $request->species)->get();
-        $starships = Starship::whereIn('name', $request->starships)->get();
-        $vehicles = Vehicle::whereIn('name', $request->vehicles)->get();
-
-        $people = People::create([
-            'name' => $request->name,
-            'height' => $request->height,
-            'mass' => $request->mass,
-            'hair_color' => $request->hair_color,
-            'eye_color' => $request->eye_color,
-            'skin_color' => $request->skin_color,
-            'birth_year' => $request->birth_year,
-            'gender' => $request->gender,
-            'url' => $request->url,
-            'planet_id' => Planet::where('name', '=', $request->homeworld)->first()->id
-        ]);
-
-        $people->films()->attach($films);
-        $people->species()->attach($species);
-        $people->starships()->attach($starships);
-        $people->vehicles()->attach($vehicles);
-        $people->images()->attach($image_ids);
+        $this->peopleService->create($request->all());
 
         return redirect(route('people.index'))
             ->with(['message' => 'People has been successfully created', 'class' => 'alert-success']);
@@ -99,9 +78,9 @@ class PeopleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(People $person)
+    public function show($id)
     {
-        return view('swapi.people.show')->with('people', $person);
+        return view('swapi.people.show')->with('people', $this->peopleService->find($id));
     }
 
     /**
@@ -122,67 +101,22 @@ class PeopleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, People $person)
+    public function update(StoreUpdatePeopleRequest $request, $id)
     {
 
-        $films = Film::whereIn('title', $request->films)->get();
-        $species = Specie::whereIn('name', $request->species)->get();
-        $starships = Starship::whereIn('name', $request->starships)->get();
-        $vehicles = Vehicle::whereIn('name', $request->vehicles)->get();
+        $this->peopleService->edit($id, $request->all());
 
-        $images = Image::whereIn('url', $request->flags)->get();
-
-
-        $images2 = [];
-
-        if (!empty($request->file('images'))) {
-            foreach ($request->file('images') as $image) {
-                $images2[] = $image->store('images', 'public');
-            }
-        }
-
-        $image_ids = [];
-
-        for($i = 0; $i < count($images2); $i++) {
-            $image = Image::create([
-                'url' => $images2[$i]
-            ]);
-
-            $image_ids[] = $image;
-        }
-
-
-        $image_ids2 = collect($image_ids);
-
-        $combinedImages = $images->merge($image_ids2);
-
-
-        $person->name = $request->name;
-        $person->height = $request->height;
-        $person->mass = $request->mass;
-        $person->hair_color = $request->hair_color;
-        $person->eye_color = $request->eye_color;
-        $person->skin_color = $request->skin_color;
-        $person->birth_year = $request->birth_year;
-        $person->gender = $request->gender;
-        $person->planet_id = Planet::where('name', '=', $request->homeworld)->first()->id;
-
-        $person->save();
-
-        $person->films()->sync($films);
-        $person->species()->sync($species);
-        $person->starships()->sync($starships);
-        $person->vehicles()->sync($vehicles);
-        $person->images()->sync($combinedImages);
+        return redirect(route('people.index'))
+            ->with(['message' => 'People has been successfully updated', 'class' => 'alert-success']);
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(People $person)
+    public function destroy($id)
     {
-        $person->delete();
+        $this->peopleService->delete($id);
 
         return redirect(route('people.index'))
             ->with(['message' => 'People has been successfully deleted', 'class' => 'alert-success']);

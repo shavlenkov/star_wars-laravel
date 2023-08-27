@@ -8,6 +8,7 @@
 
     <form class="form-group" method="POST" action="{{ route('planets.update', $planet) }}" enctype="multipart/form-data">
         @csrf
+        @method('PATCH')
         <label for="name" class="form-label">Name:</label>
         <input class="form-control w-25" name="name" type="text" value="{{ $planet->name }}" placeholder="Tatooine"/><br/><br/>
         <label for="rotation_period" class="form-label">Rotation Period:</label>

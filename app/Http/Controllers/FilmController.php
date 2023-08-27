@@ -9,15 +9,34 @@ use App\Http\Requests\StoreUpdateFilmRequest;
 use App\Models\Specie;
 use App\Models\Starship;
 use App\Models\Vehicle;
+use App\Services\FilmService;
 
 class FilmController extends Controller
 {
+
+    /**
+     * @var FilmService $filmService
+     */
+    private FilmService $filmService;
+
+    /**
+     * FilmController constructor
+     *
+     * @param FilmService $filmService
+     */
+    public function __construct(FilmService $filmService)
+    {
+        $this->filmService = $filmService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('swapi.films.index')->with('tenFilms', Film::simplePaginate(10));
+        $films = $this->filmService->paginate(10);
+
+        return view('swapi.films.index')->with('tenFilms', $films);
     }
 
     /**
@@ -38,22 +57,7 @@ class FilmController extends Controller
      */
     public function store(StoreUpdateFilmRequest $request)
     {
-        $species = Specie::whereIn('name', $request->species)->get();
-        $starships = Starship::whereIn('name', $request->starships)->get();
-        $vehicles = Vehicle::whereIn('name', $request->vehicles)->get();
-
-        $film = Film::create([
-            'title' => $request->title,
-            'episode_id' => $request->episode_id,
-            'opening_crawl' => $request->opening_crawl,
-            'director' => $request->director,
-            'producer' => $request->producer,
-            'release_date' => $request->release_date
-        ]);
-
-        $film->species()->attach($species);
-        $film->starships()->attach($starships);
-        $film->vehicles()->attach($vehicles);
+        $this->filmService->create($request->all());
 
         return redirect(route('films.index'))->with(['message' => 'Film has been successfully created', 'class' => 'alert-success']);;
     }
@@ -61,9 +65,9 @@ class FilmController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Film $film)
+    public function show($id)
     {
-        return view('swapi.films.show')->with('film', $film);
+        return view('swapi.films.show')->with('film', $this->filmService->find($id));
     }
 
     /**
@@ -82,24 +86,9 @@ class FilmController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Film $film)
+    public function update(StoreUpdateFilmRequest $request, $id)
     {
-        $species = Specie::whereIn('name', $request->species)->get();
-        $starships = Starship::whereIn('name', $request->starships)->get();
-        $vehicles = Vehicle::whereIn('name', $request->vehicles)->get();
-
-        $film->title = $request->title;
-        $film->episode_id = $request->episode_id;
-        $film->opening_crawl = $request->opening_crawl;
-        $film->director = $request->director;
-        $film->producer = $request->producer;
-        $film->release_date = $request->release_date;
-
-        $film->save();
-
-        $film->species()->attach($species);
-        $film->starships()->attach($starships);
-        $film->vehicles()->attach($vehicles);
+       $this->filmService->edit($id, $request->all());
 
         return redirect(route('films.index'))
             ->with(['message' => 'Film has been successfully created', 'class' => 'alert-success']);
@@ -109,9 +98,9 @@ class FilmController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Film $film)
+    public function destroy($id)
     {
-        $film->delete();
+        $this->filmService->delete($id);
 
         return redirect(route('films.index'))
             ->with(['message' => 'Film has been successfully deleted', 'class' => 'alert-success']);

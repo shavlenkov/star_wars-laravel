@@ -17,7 +17,7 @@
             <th>Rotation Period</th>
             <th>Orbital Period</th>
             <th>Surface Water</th>
-            <th>Population</th>\
+            <th>Population</th>
             <th colspan="2">Actions</th>
         </tr>
         </thead>

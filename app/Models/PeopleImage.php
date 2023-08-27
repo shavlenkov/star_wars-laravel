@@ -13,6 +13,6 @@ class PeopleImage extends Model
 
     protected $fillable = [
         'people_id',
-        'image_id'
+        'image_id',
     ];
 }

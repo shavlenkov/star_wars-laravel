@@ -28,7 +28,7 @@ class StoreUpdatePeopleRequest extends FormRequest
             'species' => '',
             'starships' => '',
             'vehicles' => '',
-            'images'=> 'required',
+            'images'=> '',
         ];
     }
 }
