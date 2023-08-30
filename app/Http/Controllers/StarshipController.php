@@ -4,16 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateStarshipRequest;
 use App\Models\Starship;
+use App\Services\StarshipService;
 
 
 class StarshipController extends Controller
 {
+
+
+    public function __construct(StarshipService $starshipService)
+    {
+        $this->starshipService = $starshipService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('swapi.starships.index')->with('tenStarships', Starship::simplePaginate(10));
+        $starships = $this->starshipService->paginate(10);
+
+        return view('swapi.starships.index')->with('tenStarships', $starships);
     }
 
     /**
@@ -29,21 +39,7 @@ class StarshipController extends Controller
      */
     public function store(StoreUpdateStarshipRequest $request)
     {
-        $starship = Starship::create([
-            'name' => $request->name,
-            'model' => $request->model,
-            'manufacturer' => $request->manufacturer,
-            'cost_in_credits' => $request->cost_in_credits,
-            'length' => $request->length,
-            'max_atmosphering_speed' => $request->max_atmosphering_speed,
-            'crew' => $request->crew,
-            'passengers' => $request->passengers,
-            'cargo_capacity' => $request->cargo_capacity,
-            'consumables' => $request->consumables,
-            'hyperdrive_rating' => $request->hyperdrive_rating,
-            'MGLT' => $request->MGLT,
-            'starship_class' => $request->starship_class
-        ]);
+        $this->starshipService->create($request->all());
 
         return redirect(route('starships.index'))->with(['message' => 'Starship has been successfully created', 'class' => 'alert-success']);;
     }
@@ -51,9 +47,9 @@ class StarshipController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Starship $starship)
+    public function show($id)
     {
-        return view('swapi.starships.show')->with('starship', $starship);
+        return view('swapi.starships.show')->with('starship', $this->starshipService->find($id));
     }
 
     /**
@@ -67,23 +63,9 @@ class StarshipController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Starship $starship)
+    public function update(StoreUpdateStarshipRequest $request, $id)
     {
-        $starship->name = $request->name;
-        $starship->model = $request->model;
-        $starship->manufacturer = $request->manufacturer;
-        $starship->cost_in_credits = $request->cost_in_credits;
-        $starship->length = $request->length;
-        $starship->max_atmosphering_speed = $request->max_atmosphering_speed;
-        $starship->crew = $request->crew;
-        $starship->passengers = $request->passengers;
-        $starship->cargo_capacity = $request->cargo_capacity;
-        $starship->consumables = $request->consumables;
-        $starship->hyperdrive_rating = $request->hyperdrive_rating;
-        $starship->MGLT = $request->MGLT;
-        $starship->starship_class = $request->starship_class;
-
-        $starship->save();
+        $this->starshipService->edit($id, $request->all());
 
         return redirect(route('starships.index'))
             ->with(['message' => 'Starship has been successfully created', 'class' => 'alert-success']);
@@ -93,9 +75,9 @@ class StarshipController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Starship $starship)
+    public function destroy($id)
     {
-        $starship->delete();
+        $this->starshipService->delete($id);
 
         return redirect(route('starships.index'))
             ->with(['message' => 'Starship has been successfully deleted', 'class' => 'alert-success']);
