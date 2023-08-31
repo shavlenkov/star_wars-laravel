@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdatePlanetRequest;
 
 use App\Models\Planet;
-use App\Models\Film;
 use App\Services\PlanetService;
 
 class PlanetController extends Controller
@@ -31,9 +30,7 @@ class PlanetController extends Controller
      */
     public function index()
     {
-        $planet = $this->planetService->paginate(10);
-
-        return view('swapi.planets.index')->with('tenPlanets', $planet);
+        return view('swapi.planets.index')->with('tenPlanets', $this->planetService->paginate(config('app.paginate')));
     }
 
     /**
@@ -41,9 +38,7 @@ class PlanetController extends Controller
      */
     public function create()
     {
-        return view('swapi.planets.create')->with([
-            'films' => Film::all(),
-        ]);
+        return view('swapi.planets.create');
     }
 
     /**
@@ -67,12 +62,9 @@ class PlanetController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Planet $planet)
+    public function edit($id)
     {
-        return view('swapi.planets.edit')->with([
-            'films' => Film::all(),
-            'planet' => $planet
-        ]);
+        return view('swapi.planets.edit')->with('planet', $this->planetService->find($id));
     }
 
     /**

@@ -29,7 +29,7 @@
         <input class="form-control w-25 numberFormat" name="population" type="number" value="{{ $planet->population }}" placeholder="200000"/><br/><br/>
         <label for="films" class="form-label">Films:</label>
         <select class="form-control w-25" id="films" name="films[]" multiple>
-            @foreach($films as $film)
+            @foreach(Film::all() as $film)
                 <option {{ in_array($film->title, array_column($planet->films->toArray(), 'title')) ? 'selected' : '' }}>{{ $film->title }}</option>
             @endforeach
         </select><br/><br/>

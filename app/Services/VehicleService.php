@@ -6,15 +6,15 @@ use App\Models\Vehicle;
 
 class VehicleService
 {
-    public function paginate($a) {
+    public function paginate(int $a) {
         return Vehicle::simplePaginate($a);
     }
 
-    public function find($id) {
+    public function find(int $id) {
         return Vehicle::find($id);
     }
 
-    public function create($data) {
+    public function create(array $data) {
         $vehicle = Vehicle::create([
             'name' => $data['name'],
             'model' => $data['model'],
@@ -30,7 +30,7 @@ class VehicleService
         ]);
     }
 
-    public function edit($id, $data) {
+    public function edit(int $id, array $data) {
         $vehicle = $this->find($id);
 
         $vehicle->name = $data['name'];
@@ -49,7 +49,7 @@ class VehicleService
 
     }
 
-    public function delete($id) {
+    public function delete(int $id) {
         $vehicle = $this->find($id);
 
         $vehicle->delete();

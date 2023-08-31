@@ -6,9 +6,6 @@ use App\Models\Film;
 
 use App\Http\Requests\StoreUpdateFilmRequest;
 
-use App\Models\Specie;
-use App\Models\Starship;
-use App\Models\Vehicle;
 use App\Services\FilmService;
 
 class FilmController extends Controller
@@ -34,9 +31,7 @@ class FilmController extends Controller
      */
     public function index()
     {
-        $films = $this->filmService->paginate(10);
-
-        return view('swapi.films.index')->with('tenFilms', $films);
+        return view('swapi.films.index')->with('tenFilms', $this->filmService->paginate(config('app.paginate')));
     }
 
     /**
@@ -44,12 +39,7 @@ class FilmController extends Controller
      */
     public function create()
     {
-
-        return view('swapi.films.create')->with([
-            'species' => Specie::all(),
-            'starships' => Starship::all(),
-            'vehicles' => Vehicle::all(),
-        ]);
+        return view('swapi.films.create');
     }
 
     /**
@@ -73,14 +63,9 @@ class FilmController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Film $film)
+    public function edit($id)
     {
-        return view('swapi.films.edit')->with([
-            'species' => Specie::all(),
-            'starships' => Starship::all(),
-            'vehicles' => Vehicle::all(),
-            'film' => $film
-        ]);
+        return view('swapi.films.edit')->with('film', $this->filmService->find($id));
     }
 
     /**

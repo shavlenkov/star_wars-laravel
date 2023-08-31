@@ -10,6 +10,10 @@ use App\Services\StarshipService;
 class StarshipController extends Controller
 {
 
+    /**
+     * @var StarshipService $starshipService
+     */
+    private StarshipService $starshipService;
 
     public function __construct(StarshipService $starshipService)
     {
@@ -21,9 +25,7 @@ class StarshipController extends Controller
      */
     public function index()
     {
-        $starships = $this->starshipService->paginate(10);
-
-        return view('swapi.starships.index')->with('tenStarships', $starships);
+        return view('swapi.starships.index')->with('tenStarships', $this->starshipService->paginate(config('app.paginate')));
     }
 
     /**
@@ -55,9 +57,9 @@ class StarshipController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Starship $starship)
+    public function edit($id)
     {
-        return view('swapi.starships.edit')->with(['starship' => $starship]);
+        return view('swapi.starships.edit')->with('starship', $this->starshipService->find($id));
     }
 
     /**

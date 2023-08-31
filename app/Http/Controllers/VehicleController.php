@@ -9,6 +9,11 @@ use App\Services\VehicleService;
 class VehicleController extends Controller
 {
 
+    /**
+     * @var VehicleService $vehicleService
+     */
+    private VehicleService $vehicleService;
+
     public function __construct(VehicleService $vehicleService)
     {
         $this->vehicleService = $vehicleService;
@@ -19,9 +24,7 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $vehicles = $this->vehicleService->paginate(10);
-
-        return view('swapi.vehicles.index')->with('tenVehicles', $vehicles);
+        return view('swapi.vehicles.index')->with('tenVehicles', $this->vehicleService->paginate(config('app.paginate')));
     }
 
     /**
@@ -53,9 +56,9 @@ class VehicleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Vehicle $vehicle)
+    public function edit($id)
     {
-        return view('swapi.vehicles.edit')->with(['vehicle' => $vehicle]);
+        return view('swapi.vehicles.edit')->with('vehicle', $this->vehicleService->find($id));
     }
 
     /**

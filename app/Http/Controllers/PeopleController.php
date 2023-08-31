@@ -5,16 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdatePeopleRequest;
 
 use App\Models\People;
-use App\Models\Planet;
-use App\Models\Film;
-use App\Models\Specie;
-use App\Models\Starship;
-use App\Models\Vehicle;
-
-use App\Models\Image;
 
 use App\Services\PeopleService;
-use Illuminate\Http\Request;
 
 class PeopleController extends Controller
 {
@@ -39,9 +31,7 @@ class PeopleController extends Controller
      */
     public function index()
     {
-        $people = $this->peopleService->paginate(10);
-
-        return view('swapi.people.index')->with('tenPeople', $people);
+        return view('swapi.people.index')->with('tenPeople', $this->peopleService->paginate(config('app.paginate')));
     }
 
     /**
@@ -49,16 +39,9 @@ class PeopleController extends Controller
      */
     public function create()
     {
-
         $this->authorize('create', People::class);
 
-        return view('swapi.people.create')->with([
-            'planets' => Planet::all(),
-            'films' => Film::all(),
-            'species' => Specie::all(),
-            'starships' => Starship::all(),
-            'vehicles' => Vehicle::all(),
-        ]);
+        return view('swapi.people.create');
     }
 
     /**
@@ -86,16 +69,9 @@ class PeopleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(People $person)
+    public function edit($id)
     {
-        return view('swapi.people.edit')->with([
-            'planets' => Planet::all(),
-            'films' => Film::all(),
-            'species' => Specie::all(),
-            'starships' => Starship::all(),
-            'vehicles' => Vehicle::all(),
-            'people' => $person
-        ]);
+        return view('swapi.people.edit')->with('people', $this->peopleService->find($id));
     }
 
     /**

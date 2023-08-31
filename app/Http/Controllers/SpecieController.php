@@ -11,6 +11,11 @@ class SpecieController extends Controller
 
 
     /**
+     * @var SpecieService $specieService
+     */
+    private SpecieService $specieService;
+
+    /**
      * @param SpecieService $specieService
      */
     public function __construct(SpecieService $specieService)
@@ -23,9 +28,7 @@ class SpecieController extends Controller
      */
     public function index()
     {
-        $species = $this->specieService->paginate(10);
-
-        return view('swapi.species.index')->with('tenSpecies', $species);
+        return view('swapi.species.index')->with('tenSpecies',  $this->specieService->paginate(config('app.paginate')));
     }
 
     /**
@@ -58,9 +61,9 @@ class SpecieController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Specie $specie)
+    public function edit($id)
     {
-        return view('swapi.species.edit')->with(['specie' => $specie]);
+        return view('swapi.species.edit')->with('specie', $this->specieService->find($id));
     }
 
     /**

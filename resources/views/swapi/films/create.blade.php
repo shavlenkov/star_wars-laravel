@@ -22,19 +22,19 @@
         <input class="form-control w-25" name="release_date" type="date" value="{{ old('release_date') }}"/><br/><br/>
         <label for="species" class="form-label">Species:</label>
         <select class="form-control w-25" id="species" name="species[]" multiple>
-            @foreach($species as $specie)
+            @foreach(Specie::all() as $specie)
               <option>{{ $specie->name }}</option>
             @endforeach
         </select><br/><br/>
         <label for="starships" class="form-label">Starships:</label>
         <select class="form-control w-25" id="starships" name="starships[]" multiple>
-            @foreach($starships as $starship)
+            @foreach(Starship::all() as $starship)
               <option>{{ $starship->name }}</option>
             @endforeach
         </select><br/><br/>
         <label for="vehicles" class="form-label">Vehicles:</label>
         <select class="form-control w-25" id="vehicles" name="vehicles[]" multiple>
-            @foreach($vehicles as $vehicle)
+            @foreach(Vehicle::all() as $vehicle)
               <option>{{ $vehicle->name }}</option>
             @endforeach
         </select><br/><br/>

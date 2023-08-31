@@ -7,15 +7,15 @@ use App\Models\Planet;
 
 class PlanetService
 {
-    public function paginate($a) {
+    public function paginate(int $a) {
         return Planet::simplePaginate($a);
     }
 
-    public function find($id) {
+    public function find(int $id) {
         return Planet::find($id);
     }
 
-    public function create($data) {
+    public function create(array $data) {
         $films = Film::whereIn('title', $data['films'])->get();
 
         $planet = Planet::create([
@@ -33,7 +33,7 @@ class PlanetService
         $planet->films()->attach($films);
     }
 
-    public function edit($id, $data) {
+    public function edit(int $id, array $data) {
 
         $planet = $this->find($id);
 
@@ -53,7 +53,7 @@ class PlanetService
         $planet->films()->attach($films);
     }
 
-    public function delete($id) {
+    public function delete(int $id) {
         $planet = $this->find($id);
 
         $planet->delete();

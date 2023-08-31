@@ -6,15 +6,15 @@ use App\Models\Starship;
 
 class StarshipService
 {
-    public function paginate($a) {
+    public function paginate(int $a) {
         return Starship::simplePaginate($a);
     }
 
-    public function find($id) {
+    public function find(int $id) {
         return Starship::find($id);
     }
 
-    public function create($data) {
+    public function create(array $data) {
         $starship = Starship::create([
             'name' => $data['name'],
             'model' => $data['model'],
@@ -32,7 +32,7 @@ class StarshipService
         ]);
     }
 
-    public function edit($id, $data) {
+    public function edit(int $id, array $data) {
         $starship = $this->find($id);
 
         $starship->name = $data['name'];
@@ -52,7 +52,7 @@ class StarshipService
         $starship->save();
     }
 
-    public function delete($id) {
+    public function delete(int $id) {
         $starship = $this->find($id);
 
         $starship->delete();

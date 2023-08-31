@@ -9,15 +9,15 @@ use App\Models\Vehicle;
 
 class FilmService
 {
-    public function paginate($a) {
+    public function paginate(int $a) {
         return Film::simplePaginate($a);
     }
 
-    public function find($id) {
+    public function find(int $id) {
         return Film::find($id);
     }
 
-    public function create($data) {
+    public function create(array $data) {
         $species = Specie::whereIn('name', $data['species'])->get();
         $starships = Starship::whereIn('name', $data['starships'])->get();
         $vehicles = Vehicle::whereIn('name', $data['vehicles'])->get();
@@ -36,7 +36,7 @@ class FilmService
         $film->vehicles()->attach($vehicles);
     }
 
-    public function edit($id, $data) {
+    public function edit(int $id, array $data) {
 
         $film = $this->find($id);
 
@@ -58,7 +58,7 @@ class FilmService
         $film->vehicles()->attach($vehicles);
     }
 
-    public function delete($id) {
+    public function delete(int $id) {
         $film = $this->find($id);
 
         $film->delete();

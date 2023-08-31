@@ -6,15 +6,15 @@ use App\Models\Specie;
 
 class SpecieService
 {
-    public function paginate($a) {
+    public function paginate(int $a) {
         return Specie::simplePaginate($a);
     }
 
-    public function find($id) {
+    public function find(int $id) {
         return Specie::find($id);
     }
 
-    public function create($data) {
+    public function create(array $data) {
         $species = Specie::create([
             'name' => $data['name'],
             'classification' => $data['classification'],
@@ -27,7 +27,7 @@ class SpecieService
         ]);
     }
 
-    public function edit($id, $data) {
+    public function edit(int $id, array $data) {
         $specie = $this->find($id);
 
         $specie->name = $data['name'];
@@ -42,7 +42,7 @@ class SpecieService
         $specie->save();
     }
 
-    public function delete($id) {
+    public function delete(int $id) {
         $specie = $this->find($id);
 
         $specie->delete();

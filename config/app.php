@@ -209,7 +209,14 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+        'People' => App\Models\People::class,
+        'Planet' => App\Models\Planet::class,
+        'Film' => App\Models\Film::class,
+        'Specie' => App\Models\Specie::class,
+        'Starship' => App\Models\Starship::class,
+        'Vehicle' => App\Models\Vehicle::class,
     ])->toArray(),
+
+    'paginate' => 10,
 
 ];

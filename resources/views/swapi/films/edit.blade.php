@@ -22,19 +22,19 @@
         <input class="form-control w-25" name="release_date" type="date" value="{{ $film->release_date }}"/><br/><br/>
         <label for="species" class="form-label">Species:</label>
         <select class="form-control w-25" id="species" name="species[]" multiple>
-            @foreach($species as $specie)
+            @foreach(Specie::all() as $specie)
                 <option {{ in_array($specie->name, array_column($film->species->toArray(), 'name')) ? 'selected' : '' }}>{{ $specie->name }}</option>
             @endforeach
         </select><br/><br/>
         <label for="starships" class="form-label">Starships:</label>
         <select class="form-control w-25" id="starships" name="starships[]" multiple>
-            @foreach($starships as $starship)
+            @foreach(Starship::all() as $starship)
                 <option {{ in_array($starship->name, array_column($film->starships->toArray(), 'name')) ? 'selected' : '' }}>{{ $starship->name }}</option>
             @endforeach
         </select><br/><br/>
         <label for="vehicles" class="form-label">Vehicles:</label>
         <select class="form-control w-25" id="vehicles" name="vehicles[]" multiple>
-            @foreach($vehicles as $vehicle)
+            @foreach(Vehicle::all() as $vehicle)
                 <option {{ in_array($vehicle->name, array_column($film->vehicles->toArray(), 'name')) ? 'selected' : '' }}>{{ $vehicle->name }}</option>
             @endforeach
         </select><br/><br/>

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
+
     public function getSignup()
     {
         return view('auth.signup');

@@ -12,15 +12,16 @@ use App\Models\Vehicle;
 
 class PeopleService
 {
-    public function paginate($a) {
+
+    public function paginate(int $a) {
         return People::simplePaginate($a);
     }
 
-    public function find($id) {
+    public function find(int $id) {
         return People::find($id);
     }
 
-    public function create($data) {
+    public function create(array $data) {
         $images = [];
 
         if (!empty($data['images'])) {
@@ -63,7 +64,7 @@ class PeopleService
         $people->images()->attach($image_ids);
     }
 
-    public function edit($id, $data) {
+    public function edit(int $id, array $data) {
 
         $person = $this->find($id);
 
@@ -106,7 +107,7 @@ class PeopleService
 
     }
 
-    public function delete($id) {
+    public function delete(int $id) {
         $person = $this->find($id);
 
         $person->delete();
