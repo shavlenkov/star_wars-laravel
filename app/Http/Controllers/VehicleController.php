@@ -17,6 +17,7 @@ class VehicleController extends Controller
     public function __construct(VehicleService $vehicleService)
     {
         $this->vehicleService = $vehicleService;
+        $this->authorizeResource(Vehicle::class, 'vehicle');
     }
 
     /**

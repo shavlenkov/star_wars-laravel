@@ -24,10 +24,13 @@ class PeopleController extends Controller
     public function __construct(PeopleService $peopleService)
     {
         $this->peopleService = $peopleService;
+        $this->authorizeResource(People::class, 'people');
     }
 
     /**
-     * Display a listing of the resource.
+     * Displays all characters
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -35,23 +38,23 @@ class PeopleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new character
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
-        $this->authorize('create', People::class);
-
         return view('swapi.people.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Saves the new character to the database
+     *
+     * @param StoreUpdatePeopleRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreUpdatePeopleRequest $request)
     {
-
-        $this->authorize('create', People::class);
-
         $this->peopleService->create($request->all());
 
         return redirect(route('people.index'))
@@ -79,7 +82,6 @@ class PeopleController extends Controller
      */
     public function update(StoreUpdatePeopleRequest $request, $id)
     {
-
         $this->peopleService->edit($id, $request->all());
 
         return redirect(route('people.index'))

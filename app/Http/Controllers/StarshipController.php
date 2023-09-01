@@ -18,6 +18,7 @@ class StarshipController extends Controller
     public function __construct(StarshipService $starshipService)
     {
         $this->starshipService = $starshipService;
+        $this->authorizeResource(Starship::class, 'starship');
     }
 
     /**

@@ -24,6 +24,7 @@ class FilmController extends Controller
     public function __construct(FilmService $filmService)
     {
         $this->filmService = $filmService;
+        $this->authorizeResource(Film::class, 'film');
     }
 
     /**

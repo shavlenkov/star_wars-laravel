@@ -21,6 +21,7 @@ class SpecieController extends Controller
     public function __construct(SpecieService $specieService)
     {
         $this->specieService = $specieService;
+        $this->authorizeResource(Specie::class, 'specie');
     }
 
     /**

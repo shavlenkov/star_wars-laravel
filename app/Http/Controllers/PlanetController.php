@@ -23,6 +23,7 @@ class PlanetController extends Controller
     public function __construct(PlanetService $planetService)
     {
         $this->planetService = $planetService;
+        $this->authorizeResource(Planet::class, 'planet');
     }
 
     /**
