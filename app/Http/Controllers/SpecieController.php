@@ -9,18 +9,11 @@ use App\Services\SpecieService;
 class SpecieController extends Controller
 {
 
-
-    /**
-     * @var SpecieService $specieService
-     */
-    private SpecieService $specieService;
-
     /**
      * @param SpecieService $specieService
      */
-    public function __construct(SpecieService $specieService)
+    public function __construct(private SpecieService $specieService)
     {
-        $this->specieService = $specieService;
         $this->authorizeResource(Specie::class, 'specie');
     }
 

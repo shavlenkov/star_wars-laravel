@@ -7,32 +7,28 @@ use App\Http\Requests\StoreUpdatePeopleRequest;
 use App\Models\People;
 
 use App\Services\PeopleService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class PeopleController extends Controller
 {
-
-    /**
-     * @var PeopleService $peopleService
-     */
-    private PeopleService $peopleService;
 
     /**
      * PeopleController constructor
      *
      * @param PeopleService $peopleService
      */
-    public function __construct(PeopleService $peopleService)
+    public function __construct(private PeopleService $peopleService)
     {
-        $this->peopleService = $peopleService;
         $this->authorizeResource(People::class, 'people');
     }
 
     /**
      * Displays all characters
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         return view('swapi.people.index')->with('tenPeople', $this->peopleService->paginate(config('app.paginate')));
     }
@@ -42,7 +38,7 @@ class PeopleController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(): View
     {
         return view('swapi.people.create');
     }
@@ -51,9 +47,9 @@ class PeopleController extends Controller
      * Saves the new character to the database
      *
      * @param StoreUpdatePeopleRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(StoreUpdatePeopleRequest $request)
+    public function store(StoreUpdatePeopleRequest $request): RedirectResponse
     {
         $this->peopleService->create($request->all());
 
@@ -63,8 +59,11 @@ class PeopleController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * @param int $id
+     * @return View
      */
-    public function show($id)
+    public function show(int $id): View
     {
         return view('swapi.people.show')->with('people', $this->peopleService->find($id));
     }
@@ -72,7 +71,7 @@ class PeopleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         return view('swapi.people.edit')->with('people', $this->peopleService->find($id));
     }
@@ -80,7 +79,7 @@ class PeopleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUpdatePeopleRequest $request, $id)
+    public function update(StoreUpdatePeopleRequest $request, $id): RedirectResponse
     {
         $this->peopleService->edit($id, $request->all());
 
@@ -92,7 +91,7 @@ class PeopleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $this->peopleService->delete($id);
 

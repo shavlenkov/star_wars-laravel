@@ -9,14 +9,8 @@ use App\Services\VehicleService;
 class VehicleController extends Controller
 {
 
-    /**
-     * @var VehicleService $vehicleService
-     */
-    private VehicleService $vehicleService;
-
-    public function __construct(VehicleService $vehicleService)
+    public function __construct(private VehicleService $vehicleService)
     {
-        $this->vehicleService = $vehicleService;
         $this->authorizeResource(Vehicle::class, 'vehicle');
     }
 

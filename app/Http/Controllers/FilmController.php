@@ -12,18 +12,12 @@ class FilmController extends Controller
 {
 
     /**
-     * @var FilmService $filmService
-     */
-    private FilmService $filmService;
-
-    /**
      * FilmController constructor
      *
      * @param FilmService $filmService
      */
-    public function __construct(FilmService $filmService)
+    public function __construct(private FilmService $filmService)
     {
-        $this->filmService = $filmService;
         $this->authorizeResource(Film::class, 'film');
     }
 

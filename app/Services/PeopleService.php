@@ -22,22 +22,15 @@ class PeopleService
     }
 
     public function create(array $data) {
-        $images = [];
+        $image_ids = [];
 
         if (!empty($data['images'])) {
             foreach ($data['images'] as $image) {
-                $images[] = $image->store('images', 'public');
+                $imagePath = $image->store('images', 'public');
+
+                $image = Image::create(['url' => $imagePath]);
+                $image_ids[] = $image->id;
             }
-        }
-
-        $image_ids = [];
-
-        for($i = 0; $i < count($images); $i++) {
-            $image = Image::create([
-                'url' => $images[$i]
-            ]);
-
-            $image_ids[] = $image->id;
         }
 
         $films = Film::whereIn('title', $data['films'])->get();

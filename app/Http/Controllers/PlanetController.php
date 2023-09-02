@@ -11,18 +11,12 @@ class PlanetController extends Controller
 {
 
     /**
-     * @var PlanetService  $planetService
-     */
-    private PlanetService $planetService;
-
-    /**
      * PlanetController constructor
      *
      * @param PlanetService $planetService
      */
-    public function __construct(PlanetService $planetService)
+    public function __construct(private PlanetService $planetService)
     {
-        $this->planetService = $planetService;
         $this->authorizeResource(Planet::class, 'planet');
     }
 

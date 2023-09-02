@@ -10,14 +10,8 @@ use App\Services\StarshipService;
 class StarshipController extends Controller
 {
 
-    /**
-     * @var StarshipService $starshipService
-     */
-    private StarshipService $starshipService;
-
-    public function __construct(StarshipService $starshipService)
+    public function __construct(private StarshipService $starshipService)
     {
-        $this->starshipService = $starshipService;
         $this->authorizeResource(Starship::class, 'starship');
     }
 
