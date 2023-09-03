@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\People;
 use App\Models\User;
 
 class PeoplePolicy

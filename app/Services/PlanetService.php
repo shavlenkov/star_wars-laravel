@@ -11,10 +11,6 @@ class PlanetService
         return Planet::simplePaginate($a);
     }
 
-    public function find(int $id) {
-        return Planet::find($id);
-    }
-
     public function create(array $data) {
         $films = Film::whereIn('title', $data['films'])->get();
 
@@ -33,9 +29,7 @@ class PlanetService
         $planet->films()->attach($films);
     }
 
-    public function edit(int $id, array $data) {
-
-        $planet = $this->find($id);
+    public function edit(Planet $planet, array $data) {
 
         $films = Film::whereIn('title', $data['films'])->get();
 
@@ -53,9 +47,7 @@ class PlanetService
         $planet->films()->attach($films);
     }
 
-    public function delete(int $id) {
-        $planet = $this->find($id);
-
+    public function delete(Planet $planet) {
         $planet->delete();
     }
 

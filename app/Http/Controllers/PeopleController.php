@@ -20,7 +20,7 @@ class PeopleController extends Controller
      */
     public function __construct(private PeopleService $peopleService)
     {
-        $this->authorizeResource(People::class, 'people');
+        $this->authorizeResource(People::class, 'person');
     }
 
     /**
@@ -63,25 +63,25 @@ class PeopleController extends Controller
      * @param int $id
      * @return View
      */
-    public function show(int $id): View
+    public function show(People $person): View
     {
-        return view('swapi.people.show')->with('people', $this->peopleService->find($id));
+        return view('swapi.people.show')->with('people', $person);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id): View
+    public function edit(People $person): View
     {
-        return view('swapi.people.edit')->with('people', $this->peopleService->find($id));
+        return view('swapi.people.edit')->with('people', $person);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUpdatePeopleRequest $request, $id): RedirectResponse
+    public function update(StoreUpdatePeopleRequest $request, People $person): RedirectResponse
     {
-        $this->peopleService->edit($id, $request->all());
+        $this->peopleService->edit($person, $request->all());
 
         return redirect(route('people.index'))
             ->with(['message' => 'People has been successfully updated', 'class' => 'alert-success']);
@@ -91,9 +91,9 @@ class PeopleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id): RedirectResponse
+    public function destroy(People $person): RedirectResponse
     {
-        $this->peopleService->delete($id);
+        $this->peopleService->delete($person);
 
         return redirect(route('people.index'))
             ->with(['message' => 'People has been successfully deleted', 'class' => 'alert-success']);

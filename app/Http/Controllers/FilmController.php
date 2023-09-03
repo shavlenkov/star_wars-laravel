@@ -7,6 +7,8 @@ use App\Models\Film;
 use App\Http\Requests\StoreUpdateFilmRequest;
 
 use App\Services\FilmService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class FilmController extends Controller
 {
@@ -24,7 +26,7 @@ class FilmController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         return view('swapi.films.index')->with('tenFilms', $this->filmService->paginate(config('app.paginate')));
     }
@@ -32,7 +34,7 @@ class FilmController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('swapi.films.create');
     }
@@ -40,7 +42,7 @@ class FilmController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateFilmRequest $request)
+    public function store(StoreUpdateFilmRequest $request): RedirectResponse
     {
         $this->filmService->create($request->all());
 
@@ -50,25 +52,25 @@ class FilmController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Film $film): View
     {
-        return view('swapi.films.show')->with('film', $this->filmService->find($id));
+        return view('swapi.films.show')->with('film', $film);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Film $film): View
     {
-        return view('swapi.films.edit')->with('film', $this->filmService->find($id));
+        return view('swapi.films.edit')->with('film', $film);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUpdateFilmRequest $request, $id)
+    public function update(StoreUpdateFilmRequest $request, Film $film): RedirectResponse
     {
-       $this->filmService->edit($id, $request->all());
+       $this->filmService->edit($film, $request->all());
 
         return redirect(route('films.index'))
             ->with(['message' => 'Film has been successfully created', 'class' => 'alert-success']);
@@ -78,9 +80,9 @@ class FilmController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Film $film): RedirectResponse
     {
-        $this->filmService->delete($id);
+        $this->filmService->delete($film);
 
         return redirect(route('films.index'))
             ->with(['message' => 'Film has been successfully deleted', 'class' => 'alert-success']);

@@ -10,10 +10,6 @@ class StarshipService
         return Starship::simplePaginate($a);
     }
 
-    public function find(int $id) {
-        return Starship::find($id);
-    }
-
     public function create(array $data) {
         $starship = Starship::create([
             'name' => $data['name'],
@@ -32,8 +28,7 @@ class StarshipService
         ]);
     }
 
-    public function edit(int $id, array $data) {
-        $starship = $this->find($id);
+    public function edit(Starship $starship, array $data) {
 
         $starship->name = $data['name'];
         $starship->model = $data['model'];
@@ -52,9 +47,7 @@ class StarshipService
         $starship->save();
     }
 
-    public function delete(int $id) {
-        $starship = $this->find($id);
-
+    public function delete(Starship $starship) {
         $starship->delete();
     }
 }

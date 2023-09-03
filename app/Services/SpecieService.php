@@ -10,10 +10,6 @@ class SpecieService
         return Specie::simplePaginate($a);
     }
 
-    public function find(int $id) {
-        return Specie::find($id);
-    }
-
     public function create(array $data) {
         $species = Specie::create([
             'name' => $data['name'],
@@ -27,9 +23,7 @@ class SpecieService
         ]);
     }
 
-    public function edit(int $id, array $data) {
-        $specie = $this->find($id);
-
+    public function edit(Specie $specie, array $data) {
         $specie->name = $data['name'];
         $specie->classification = $data['classification'];
         $specie->average_height = $data['average_height'];
@@ -42,9 +36,7 @@ class SpecieService
         $specie->save();
     }
 
-    public function delete(int $id) {
-        $specie = $this->find($id);
-
+    public function delete(Specie $specie) {
         $specie->delete();
     }
 

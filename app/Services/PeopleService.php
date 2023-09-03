@@ -17,10 +17,6 @@ class PeopleService
         return People::simplePaginate($a);
     }
 
-    public function find(int $id) {
-        return People::find($id);
-    }
-
     public function create(array $data) {
         $image_ids = [];
 
@@ -57,9 +53,7 @@ class PeopleService
         $people->images()->attach($image_ids);
     }
 
-    public function edit(int $id, array $data) {
-
-        $person = $this->find($id);
+    public function edit(People $person, array $data) {
 
         $films = Film::whereIn('title', $data['films'])->get();
         $species = !empty($data['species']) ? Specie::whereIn('name', $data['species'])->get() : [];
@@ -100,9 +94,7 @@ class PeopleService
 
     }
 
-    public function delete(int $id) {
-        $person = $this->find($id);
-
+    public function delete(People $person) {
         $person->delete();
     }
 

@@ -13,10 +13,6 @@ class FilmService
         return Film::simplePaginate($a);
     }
 
-    public function find(int $id) {
-        return Film::find($id);
-    }
-
     public function create(array $data) {
         $species = Specie::whereIn('name', $data['species'])->get();
         $starships = Starship::whereIn('name', $data['starships'])->get();
@@ -36,9 +32,7 @@ class FilmService
         $film->vehicles()->attach($vehicles);
     }
 
-    public function edit(int $id, array $data) {
-
-        $film = $this->find($id);
+    public function edit(Film $film, array $data) {
 
         $species = Specie::whereIn('name', $data['species'])->get();
         $starships = Starship::whereIn('name', $data['starships'])->get();
@@ -58,9 +52,7 @@ class FilmService
         $film->vehicles()->attach($vehicles);
     }
 
-    public function delete(int $id) {
-        $film = $this->find($id);
-
+    public function delete(Film $film) {
         $film->delete();
     }
 

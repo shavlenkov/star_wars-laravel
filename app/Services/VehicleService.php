@@ -10,10 +10,6 @@ class VehicleService
         return Vehicle::simplePaginate($a);
     }
 
-    public function find(int $id) {
-        return Vehicle::find($id);
-    }
-
     public function create(array $data) {
         $vehicle = Vehicle::create([
             'name' => $data['name'],
@@ -30,8 +26,7 @@ class VehicleService
         ]);
     }
 
-    public function edit(int $id, array $data) {
-        $vehicle = $this->find($id);
+    public function edit(Vehicle $vehicle, array $data) {
 
         $vehicle->name = $data['name'];
         $vehicle->model = $data['model'];
@@ -49,9 +44,7 @@ class VehicleService
 
     }
 
-    public function delete(int $id) {
-        $vehicle = $this->find($id);
-
+    public function delete(Vehicle $vehicle) {
         $vehicle->delete();
     }
 }

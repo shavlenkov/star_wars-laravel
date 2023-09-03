@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Specie;
 use App\Http\Requests\StoreUpdateSpecieRequest;
 use App\Services\SpecieService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class SpecieController extends Controller
 {
@@ -20,7 +22,7 @@ class SpecieController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         return view('swapi.species.index')->with('tenSpecies',  $this->specieService->paginate(config('app.paginate')));
     }
@@ -28,7 +30,7 @@ class SpecieController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('swapi.species.create');
     }
@@ -36,7 +38,7 @@ class SpecieController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateSpecieRequest $request)
+    public function store(StoreUpdateSpecieRequest $request): RedirectResponse
     {
         $this->specieService->create($request->all());
 
@@ -47,25 +49,25 @@ class SpecieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Specie $specie): View
     {
-        return view('swapi.species.show')->with('specie', $this->specieService->find($id));
+        return view('swapi.species.show')->with('specie', $specie);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Specie $specie): View
     {
-        return view('swapi.species.edit')->with('specie', $this->specieService->find($id));
+        return view('swapi.species.edit')->with('specie', $specie);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUpdateSpecieRequest $request, $id)
+    public function update(StoreUpdateSpecieRequest $request, Specie $specie): RedirectResponse
     {
-        $this->specieService->edit($id, $request->all());
+        $this->specieService->edit($specie, $request->all());
 
         return redirect(route('species.index'))
             ->with(['message' => 'Specie has been successfully created', 'class' => 'alert-success']);
@@ -75,9 +77,9 @@ class SpecieController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Specie $specie): RedirectResponse
     {
-        $this->specieService->delete($id);
+        $this->specieService->delete($specie);
 
         return redirect(route('species.index'))
             ->with(['message' => 'Specie has been successfully deleted', 'class' => 'alert-success']);

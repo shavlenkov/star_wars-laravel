@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdateVehicleRequest;
 use App\Models\Vehicle;
 use App\Services\VehicleService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class VehicleController extends Controller
 {
@@ -17,7 +19,7 @@ class VehicleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         return view('swapi.vehicles.index')->with('tenVehicles', $this->vehicleService->paginate(config('app.paginate')));
     }
@@ -25,7 +27,7 @@ class VehicleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('swapi.vehicles.create');
     }
@@ -33,7 +35,7 @@ class VehicleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateVehicleRequest $request)
+    public function store(StoreUpdateVehicleRequest $request): RedirectResponse
     {
         $this->vehicleService->create($request->all());
 
@@ -43,25 +45,25 @@ class VehicleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Vehicle $vehicle): View
     {
-        return view('swapi.vehicles.show')->with('vehicle', $this->vehicleService->find($id));
+        return view('swapi.vehicles.show')->with('vehicle', $vehicle);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Vehicle $vehicle): View
     {
-        return view('swapi.vehicles.edit')->with('vehicle', $this->vehicleService->find($id));
+        return view('swapi.vehicles.edit')->with('vehicle', $vehicle);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUpdateVehicleRequest $request, $id)
+    public function update(StoreUpdateVehicleRequest $request, Vehicle $vehicle): RedirectResponse
     {
-        $this->vehicleService->edit($id, $request->all());
+        $this->vehicleService->edit($vehicle, $request->all());
 
         return redirect(route('vehicles.index'))
             ->with(['message' => 'Vehicle has been successfully created', 'class' => 'alert-success']);
@@ -70,9 +72,9 @@ class VehicleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Vehicle $vehicle): RedirectResponse
     {
-        $this->vehicleService->delete($id);
+        $this->vehicleService->delete($vehicle);
 
         return redirect(route('vehicles.index'))
             ->with(['message' => 'Vehicle has been successfully deleted', 'class' => 'alert-success']);
