@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @can('create', App\Models\Starship::class)
+    @can('create', new Starship())
     <a class="btn btn-success" href="{{ route('starships.create') }}">Create</a>
     <br><br>
     @endcan
@@ -33,7 +33,7 @@
                 <td>{{ $starship->length }}</td>
                 <td>{{ $starship->starship_class }}</td>
                 <td><a class="btn btn-info" href="{{ route('starships.show', $starship->id) }}"><i class="fa-solid fa-eye"></i></a></td>
-                @can('update', App\Models\Starship::class)
+                @can('update', new Starship())
                 <td><a class="btn btn-warning" href="{{ route('starships.edit', $starship->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                 @endcan
             </tr>

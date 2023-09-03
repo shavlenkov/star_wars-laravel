@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @can('create', App\Models\Film::class)
+    @can('create', new Film())
     <a class="btn btn-success" href="{{ route('films.create') }}">Create</a>
     <br><br>
     @endcan
@@ -29,7 +29,7 @@
                 <td>{{ $film->opening_crawl }}</td>
                 <td>{{ $film->release_date }}</td>
                 <td><a class="btn btn-info" href="{{ route('films.show', $film->id) }}"><i class="fa-solid fa-eye"></i></a></td>
-                @can('update', App\Models\Film::class)
+                @can('update', new Film())
                 <td><a class="btn btn-warning" href="{{ route('films.edit', $film->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                 @endcan
             </tr>

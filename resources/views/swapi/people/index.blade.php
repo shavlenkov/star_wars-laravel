@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @can('create', App\Models\People::class)
+    @can('create', new People())
     <a class="btn btn-success" href="{{ route('people.create') }}">Create</a>
     <br><br>
     @endcan
@@ -29,7 +29,7 @@
                 <td>{{ $people->gender }}</td>
                 <td>{{ $people->planet->name }}</td>
                 <td><a class="btn btn-info" href="{{ route('people.show', $people->id) }}"><i class="fa-solid fa-eye"></i></a></td>
-                @can('update', App\Models\People::class)
+                @can('update', new People())
                 <td><a class="btn btn-warning" href="{{ route('people.edit', $people->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                 @endcan
 

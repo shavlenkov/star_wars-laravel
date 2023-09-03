@@ -209,12 +209,12 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'People' => App\Models\People::class,
-        'Planet' => App\Models\Planet::class,
-        'Film' => App\Models\Film::class,
-        'Specie' => App\Models\Specie::class,
-        'Starship' => App\Models\Starship::class,
-        'Vehicle' => App\Models\Vehicle::class,
+        'People' => 'App\Models\People',
+        'Planet' => 'App\Models\Planet',
+        'Film' => 'App\Models\Film',
+        'Specie' => 'App\Models\Specie',
+        'Starship' => 'App\Models\Starship',
+        'Vehicle' => 'App\Models\Vehicle',
     ])->toArray(),
 
     'paginate' => 10,

@@ -24,7 +24,7 @@ class PeopleController extends Controller
     }
 
     /**
-     * Displays all characters
+     * Displays all people
      *
      * @return View
      */
@@ -34,9 +34,9 @@ class PeopleController extends Controller
     }
 
     /**
-     * Show the form for creating a new character
+     * Show the form for creating a new people
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function create(): View
     {
@@ -44,7 +44,7 @@ class PeopleController extends Controller
     }
 
     /**
-     * Saves the new character to the database
+     * Saves the new people to the database
      *
      * @param StoreUpdatePeopleRequest $request
      * @return RedirectResponse
@@ -58,9 +58,9 @@ class PeopleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified person.
      *
-     * @param int $id
+     * @param People $person
      * @return View
      */
     public function show(People $person): View
@@ -69,7 +69,10 @@ class PeopleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing a people
+     *
+     * @param People $person
+     * @return View
      */
     public function edit(People $person): View
     {
@@ -77,7 +80,11 @@ class PeopleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified person in the database.
+     *
+     * @param StoreUpdatePeopleRequest $request
+     * @param People $person
+     * @return RedirectResponse
      */
     public function update(StoreUpdatePeopleRequest $request, People $person): RedirectResponse
     {
@@ -89,7 +96,10 @@ class PeopleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified person from the database.
+     *
+     * @param People $person
+     * @return RedirectResponse
      */
     public function destroy(People $person): RedirectResponse
     {

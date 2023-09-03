@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @can('create', App\Models\Planet::class)
+    @can('create', new Planet())
     <a class="btn btn-success" href="{{ route('planets.create') }}">Create</a>
     <br><br>
     @endcan
@@ -31,7 +31,7 @@
                 <td>{{ $planet->surface_water }}</td>
                 <td>{{ $planet->population }}</td>
                 <td><a class="btn btn-info" href="{{ route('planets.show', $planet->id) }}"><i class="fa-solid fa-eye"></i></a></td>
-                @can('update', App\Models\Planet::class)
+                @can('update', new Planet())
                 <td><a class="btn btn-warning" href="{{ route('planets.edit', $planet->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                 @endcan
             </tr>

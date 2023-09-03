@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @can('create', App\Models\Vehicle::class)
+    @can('create', new Vehicle())
     <a class="btn btn-success" href="{{ route('vehicles.create') }}">Create</a>
     <br><br>
     @endcan
@@ -33,7 +33,7 @@
                 <td>{{ $vehicle->length }}</td>
                 <td>{{ $vehicle->vehicle_class }}</td>
                 <td><a class="btn btn-info" href="{{ route('vehicles.show', $vehicle->id) }}"><i class="fa-solid fa-eye"></i></a></td>
-                @can('update', App\Models\Vehicle::class)
+                @can('update', new Vehicle())
                 <td><a class="btn btn-warning" href="{{ route('vehicles.edit', $vehicle->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                 @endcan
             </tr>

@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @can('create', App\Models\Specie::class)
+    @can('create', new Specie())
     <a class="btn btn-success" href="{{ route('species.create') }}">Create</a>
     <br><br>
     @endcan
@@ -31,7 +31,7 @@
                 <td>{{ $specie->average_lifespan }}</td>
                 <td>{{ $specie->language }}</td>
                 <td><a class="btn btn-info" href="{{ route('species.show', $specie->id) }}"><i class="fa-solid fa-eye"></i></a></td>
-                @can('update', App\Models\Specie::class)
+                @can('update', new Specie())
                 <td><a class="btn btn-warning" href="{{ route('species.edit', $specie->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                 @endcan
             </tr>
