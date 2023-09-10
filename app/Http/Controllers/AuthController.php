@@ -2,28 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SigninUserRequest;
+use App\Http\Requests\SignupUserRequest;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Password;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
 
-    public function getSignup()
+    /**
+     * Display the signup view.
+     *
+     * @return View
+     */
+    public function getSignup(): View
     {
         return view('auth.signup');
     }
 
-    public function postSignup(Request $request)
+    public function postSignup(SignupUserRequest $request): RedirectResponse
     {
 
-        $data = $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|unique:users|email:rfc,dns',
-            'password' => 'required'
-        ]);
+        $data = $request->all();
 
         $data['password'] = bcrypt($data['password']);
         $data['status'] = 0;
@@ -36,17 +39,14 @@ class AuthController extends Controller
             ->route('people.index');
     }
 
-    public function getSignin() {
+    public function getSignin(): View {
         return view('auth.signin');
     }
 
-    public function postSignin(Request $request)
+    public function postSignin(SigninUserRequest $request): RedirectResponse
     {
 
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
+        $request->validated();
 
         if (!Auth::attempt($request->only(['email', 'password']))) {
             return redirect()
@@ -57,7 +57,7 @@ class AuthController extends Controller
             ->route('people.index');
     }
 
-    public function getSignout()
+    public function getSignout(): RedirectResponse
     {
         Auth::logout();
 
